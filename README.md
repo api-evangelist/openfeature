@@ -13,7 +13,7 @@ OpenFeature is a CNCF incubating open specification for vendor-agnostic feature 
 
 ## Timestamps
 - **Created:** 2026-03-16
-- **Modified:** 2026-03-16
+- **Modified:** 2026-04-28
 
 ## APIs
 
@@ -27,6 +27,7 @@ The OpenFeature spec defines APIs for flag evaluation, provider integration, hoo
 
 #### Properties
 - [Documentation](https://openfeature.dev/docs/reference/intro)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/openfeature/refs/heads/main/openapi/openfeature-openapi.yaml)
 
 ## Common Properties
 - [Documentation](https://openfeature.dev/docs/)
