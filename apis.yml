@@ -49,6 +49,11 @@ common:
     name: OpenFeature GitHub
     description: Source code and SDKs.
     url: https://github.com/open-feature
+  - type: Integrations
+    url: https://openfeature.dev/ecosystem/
+integrations:
+  - name: OpenFeature
+  - name: Deploys by Netlify
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
