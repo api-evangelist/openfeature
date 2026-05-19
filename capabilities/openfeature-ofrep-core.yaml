@@ -1,0 +1,136 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: OpenFeature Remote Evaluation Protocol (OFREP) — OFREP Core
+  description: 'OpenFeature Remote Evaluation Protocol (OFREP) — OFREP Core. 2 operations. Lead operation: Bulk Evaluate All
+    Feature Flags. Self-contained Naftiko capability covering one Openfeature business surface.'
+  tags:
+  - Openfeature
+  - OFREP Core
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    OPENFEATURE_API_KEY: OPENFEATURE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: openfeature-ofrep-core
+    baseUri: ''
+    description: OpenFeature Remote Evaluation Protocol (OFREP) — OFREP Core business capability. Self-contained, no shared
+      references.
+    resources:
+    - name: ofrep-v1-evaluate-flags
+      path: /ofrep/v1/evaluate/flags
+      operations:
+      - name: evaluateflagsbulk
+        method: POST
+        description: Bulk Evaluate All Feature Flags
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-None-Match
+          in: header
+          type: string
+          description: 'Optional ETag value from a previous bulk evaluation response. If provided and the '
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: ofrep-v1-evaluate-flags-key
+      path: /ofrep/v1/evaluate/flags/{key}
+      operations:
+      - name: evaluateflag
+        method: POST
+        description: Evaluate A Single Feature Flag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: key
+          in: path
+          type: string
+          description: The unique identifier (key) of the feature flag
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.OPENFEATURE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: openfeature-ofrep-core-rest
+    port: 8080
+    description: REST adapter for OpenFeature Remote Evaluation Protocol (OFREP) — OFREP Core. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/ofrep/v1/evaluate/flags
+      name: ofrep-v1-evaluate-flags
+      description: REST surface for ofrep-v1-evaluate-flags.
+      operations:
+      - method: POST
+        name: evaluateflagsbulk
+        description: Bulk Evaluate All Feature Flags
+        call: openfeature-ofrep-core.evaluateflagsbulk
+        with:
+          If-None-Match: rest.If-None-Match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/ofrep/v1/evaluate/flags/{key}
+      name: ofrep-v1-evaluate-flags-key
+      description: REST surface for ofrep-v1-evaluate-flags-key.
+      operations:
+      - method: POST
+        name: evaluateflag
+        description: Evaluate A Single Feature Flag
+        call: openfeature-ofrep-core.evaluateflag
+        with:
+          key: rest.key
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: openfeature-ofrep-core-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for OpenFeature Remote Evaluation Protocol (OFREP) — OFREP Core. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: bulk-evaluate-all-feature-flags
+      description: Bulk Evaluate All Feature Flags
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: openfeature-ofrep-core.evaluateflagsbulk
+      with:
+        If-None-Match: tools.If-None-Match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: evaluate-single-feature-flag
+      description: Evaluate A Single Feature Flag
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: openfeature-ofrep-core.evaluateflag
+      with:
+        key: tools.key
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
