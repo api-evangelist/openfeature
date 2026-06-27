@@ -30,7 +30,7 @@ apis:
     url: https://openfeature.dev/docs/reference/intro
   - type: OpenAPI
     url: https://raw.githubusercontent.com/api-evangelist/openfeature/refs/heads/main/openapi/openfeature-openapi.yaml
-  - type: NaftikoCapability
+  - type: X-NaftikoCapability
     url: capabilities/openfeature-ofrep-core.yaml
   tags:
   - Evaluation API
