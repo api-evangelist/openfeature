@@ -37,6 +37,10 @@ apis:
   - Feature Flags
   - Specification
 common:
+- type: DomainSecurity
+  url: security/openfeature-domain-security.yml
+- type: Authentication
+  url: authentication/openfeature-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/openfeature
 - type: Documentation
@@ -49,6 +53,8 @@ common:
   url: https://github.com/open-feature
 - type: Integrations
   url: https://openfeature.dev/ecosystem/
+- type: Blog
+  url: https://openfeature.dev/blog/rss.xml
 integrations:
 - name: OpenFeature
 - name: Deploys by Netlify

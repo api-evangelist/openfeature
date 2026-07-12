@@ -1,0 +1,27 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/openfeature-openapi.yaml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: "Optional Bearer token authentication. If supported by the flag management system,\
+    \ \nclients can authenticate using a Bearer token in the `Authorization` header following\
+    \ \nthe format: `Authorization: Bearer <token>`."
+  sources:
+  - openapi/openfeature-openapi.yaml
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-API-Key
+  description: "Optional API key authentication. If supported by the flag management system,\
+    \ clients \ncan authenticate by providing an API key in the `X-API-Key` header."
+  sources:
+  - openapi/openfeature-openapi.yaml
