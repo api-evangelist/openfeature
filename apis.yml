@@ -37,6 +37,8 @@ apis:
   - Feature Flags
   - Specification
 common:
+- type: AgenticAccess
+  url: agentic-access/openfeature-agentic-access.yml
 - type: DomainSecurity
   url: security/openfeature-domain-security.yml
 - type: Authentication
