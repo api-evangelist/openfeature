@@ -1,0 +1,14 @@
+{
+  "provider": "openfeature",
+  "sources": [
+    "openfeature-ofrep-core-api-openapi.yml"
+  ],
+  "outputs": [
+    "openfeature-ofrep-core-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
