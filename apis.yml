@@ -43,8 +43,6 @@ apis:
     url: openapi/openfeature-ofrep-core-api-openapi.yml
   - type: Documentation
     url: https://openfeature.dev/docs/reference/intro
-  - type: X-NaftikoCapability
-    url: capabilities/openfeature-ofrep-core.yaml
 common:
 - type: AgenticAccess
   url: agentic-access/openfeature-agentic-access.yml
