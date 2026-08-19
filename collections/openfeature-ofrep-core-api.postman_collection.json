@@ -1,0 +1,1093 @@
+{
+  "item": [
+    {
+      "id": "684f801e-091e-4952-b9b8-c7194396ad8d",
+      "name": "OFREP Core",
+      "description": {
+        "content": "**Required**: Core APIs to implement to support OFREP.  \n*This is the minimum set of APIs required for a flag management system to be OFREP compatible.*\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2a17cc2c-d166-48bf-8bc0-1165e420ce88",
+          "name": "Evaluate A Single Feature Flag",
+          "request": {
+            "name": "Evaluate A Single Feature Flag",
+            "description": {
+              "content": "Evaluates a single feature flag by its key. This endpoint is used by **server-side providers** \nfor dynamic context evaluation, where each evaluation request includes the evaluation context.\n\nThe endpoint returns the evaluated flag value along with metadata including the evaluation \nreason, variant, and any flag-specific metadata. The flag value can be one of several types: \nboolean, string, integer, float, object, or a code default (indicating the provider should \nuse the code default value).\n\n**Use Case**: Server-side applications where evaluation context may change between requests \nand real-time targeting decisions are required.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ofrep",
+                "v1",
+                "evaluate",
+                "flags",
+                ":key"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "key",
+                  "description": "(Required) The unique identifier (key) of the feature flag"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"context\": {\n    \"targetingKey\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bcf811ee-0dc1-4154-a8ba-5a73cd7c4cd6",
+              "name": "Successful flag evaluation. Returns the evaluated flag value with metadata.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"discount-banner\",\n  \"value\": true,\n  \"reason\": \"TARGETING_MATCH\",\n  \"variant\": \"enabled\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86dcf1ee-e2c4-419a-888d-0301ec3d58aa",
+              "name": "Bad evaluation request. The request is malformed or contains invalid context.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"my-flag\",\n  \"errorCode\": \"INVALID_CONTEXT\",\n  \"errorDetails\": \"Context is missing required targetingKey property\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3da61221-c554-4e9f-ad4a-5f8da6f5edbf",
+              "name": "Unauthorized. Authentication credentials are missing, invalid, or expired.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "dc373d67-1ebf-445b-b40f-1109c7cdffc4",
+              "name": "Forbidden. The client does not have permission to access the requested resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "69395557-2949-46d4-a4f2-bd1261e3b7ff",
+              "name": "Flag not found. The specified flag key does not exist in the flag management system.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key\": \"non-existent-flag\",\n  \"errorCode\": \"FLAG_NOT_FOUND\",\n  \"errorDetails\": \"Flag 'non-existent-flag' was not found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ff333b0-33f4-4045-a423-ed27052efda2",
+              "name": "Too Many Requests. Rate limit has been exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Indicates when to retry the request again. Can be either a date-time string \nor a number of seconds to wait.\n",
+                  "key": "Retry-After",
+                  "value": "2024-02-07T12:00:00Z"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d418ff1d-ba0a-4768-ae71-ba247f3c5f64",
+              "name": "Internal Server Error. An unexpected error occurred on the server that prevented flag evaluation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags",
+                    ":key"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "key",
+                      "description": "(Required) The unique identifier (key) of the feature flag"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-123\",\n    \"email\": \"user@example.com\",\n    \"custom-plan\": \"premium\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorDetails\": \"An internal server error occurred while processing the request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5974b05b-3268-4b9c-8be8-5cbd786ae940",
+          "name": "Bulk Evaluate All Feature Flags",
+          "request": {
+            "name": "Bulk Evaluate All Feature Flags",
+            "description": {
+              "content": "Evaluates all feature flags in a single request using a static context. This endpoint is \nused by **client-side providers** for static context evaluation, where all flags are evaluated \nonce and then cached locally for subsequent use.\n\nThe endpoint returns an array of all flag evaluations, where each flag can be either a \nsuccessful evaluation or an evaluation failure. The response includes an ETag header for \ncache validation, allowing clients to use the `If-None-Match` header to avoid unnecessary \nre-evaluation when flags haven't changed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ofrep",
+                "v1",
+                "evaluate",
+                "flags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "flagConfigEtag",
+                  "value": "<string>",
+                  "description": "Optional ETag metadata provided by an event stream for change-triggered\nre-fetches (see ADR-0008). This is not a standard HTTP conditional request\nheader; it is metadata for server-side cache validation and freshness\nchecks. It should only be included when the request is directly triggered\nby a received change notification event.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "flagConfigLastModified",
+                  "value": "<integer>",
+                  "description": "Optional last-modified metadata provided by an event stream for\nchange-triggered re-fetches (see ADR-0008). Supports Unix timestamp in\nseconds (recommended) or an ISO 8601 date-time string, and is\ntransported as query metadata rather than `If-Modified-Since`. It should\nonly be included when the request is directly triggered by a received\nchange notification event.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                "key": "If-None-Match",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"context\": {\n    \"targetingKey\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "df6156f3-55c5-43e9-aeee-cd27a83fb4d1",
+              "name": "Successful bulk evaluation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Entity tag (ETag) representing the current state of all flags. Clients should \ninclude this value in subsequent requests using the `If-None-Match` header for \ncache validation.\n",
+                  "key": "ETag",
+                  "value": "abc123xyz"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"flags\": [\n    {\n      \"key\": \"discount-banner\",\n      \"value\": true,\n      \"reason\": \"TARGETING_MATCH\",\n      \"variant\": \"enabled\"\n    },\n    {\n      \"key\": \"theme-color\",\n      \"value\": \"blue\",\n      \"reason\": \"STATIC\",\n      \"variant\": \"default\"\n    },\n    {\n      \"key\": \"non-existent-flag\",\n      \"errorCode\": \"FLAG_NOT_FOUND\",\n      \"errorDetails\": \"Flag 'non-existent-flag' was not found\"\n    }\n  ],\n  \"eventStreams\": [\n    {\n      \"type\": \"sse\",\n      \"url\": \"https://sse.example.com/event-stream?channels=env_abc123_v1\",\n      \"inactivityDelaySec\": 120\n    }\n  ],\n  \"metadata\": {\n    \"version\": \"v12\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4621a35a-07fc-46fd-8c1d-b64e339a1ccb",
+              "name": "Not Modified. The flags haven't changed since the last evaluation (ETag matches). No response body is returned.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "28738a1d-d9af-40cc-8405-233cd8f53d96",
+              "name": "Bad evaluation request. The request is malformed or contains invalid context.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorCode\": \"INVALID_CONTEXT\",\n  \"errorDetails\": \"Context is missing required targetingKey property\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3bea7611-9022-4fcf-bc66-b06a19e18eec",
+              "name": "Unauthorized. Authentication credentials are missing, invalid, or expired.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "62552336-09bb-4bd5-be7f-0bbb74c58026",
+              "name": "Forbidden. The client does not have permission to access the requested resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cbb43ac5-8e96-4c95-8679-f6ee66c8857b",
+              "name": "Too Many Requests. Rate limit has been exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Indicates when to retry the request again. Can be either a date-time string \nor a number of seconds to wait.\n",
+                  "key": "Retry-After",
+                  "value": "1962-06-22T06:40:13.154Z"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1af7bd38-0102-4b43-ae56-9504d171a617",
+              "name": "Internal server error. An unexpected error occurred on the server that prevented flag evaluation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ofrep",
+                    "v1",
+                    "evaluate",
+                    "flags"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "flagConfigEtag",
+                      "value": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    {
+                      "key": "flagConfigLastModified",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-Key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "Optional ETag value from a previous bulk evaluation response. If provided and the \nETag matches the current flag set, the server will return a 304 Not Modified response, \nindicating that flags haven't changed since the last evaluation.\n",
+                    "key": "If-None-Match",
+                    "value": "abc123xyz"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"context\": {\n    \"targetingKey\": \"user-456\",\n    \"email\": \"user@example.com\",\n    \"plan\": \"free\",\n    \"country\": \"CA\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorDetails\": \"An internal server error occurred while processing the request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "13278adf-2112-4be4-9020-1331140df571",
+    "name": "OpenFeature Remote Evaluation Protocol (OFREP) OFREP Core API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "---\nThe **OpenFeature Remote Evaluation Protocol (OFREP)** is an API specification for feature flagging \nthat enables vendor-agnostic communication between applications and flag management systems. \n\nOFREP defines a standard API layer between OpenFeature providers and flag management systems, \nallowing any flag management system to implement the protocol and be compatible with \ncommunity-maintained providers.\n\nFor more information, see the [OFREP documentation](https://openfeature.dev/docs/reference/other-technologies/ofrep/).\n",
+      "type": "text/plain"
+    }
+  }
+}

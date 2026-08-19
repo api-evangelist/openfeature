@@ -1,0 +1,84 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "OpenFeature Remote Evaluation Protocol (OFREP) OFREP Core API",
+    "version": "0.3.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-Key",
+      "value": "{{X-API-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OFREP Core",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Evaluate A Single Feature Flag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/ofrep/v1/evaluate/flags/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "discount-banner",
+                "type": "path",
+                "description": "The unique identifier (key) of the feature flag"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Evaluates a single feature flag by its key. This endpoint is used by **server-side providers** \nfor dynamic context evaluation, where each evaluation request includes the evaluation context.\n\nThe endpoint returns the evaluated flag value along with metadata including the evaluation \nreason, variant, and any flag-specific metadata. The flag value can be one of several types: \nboolean, string, integer, float, object, or a code default (indicating the provider should \nuse the code default value).\n\n"
+        },
+        {
+          "info": {
+            "name": "Bulk Evaluate All Feature Flags",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "/ofrep/v1/evaluate/flags",
+            "headers": [
+              {
+                "name": "If-None-Match",
+                "value": "abc123xyz"
+              }
+            ],
+            "params": [
+              {
+                "name": "flagConfigEtag",
+                "value": "550e8400-e29b-41d4-a716-446655440000",
+                "type": "query",
+                "description": "Optional ETag metadata provided by an event stream for change-triggered\nre-fetches (see ADR-0008). This is not a standard HTTP conditional request\nheader; it is metadata for server-side cache validation and freshness\nchecks. It should only be included when the request is directly triggered\nby a received change notification event.\n"
+              },
+              {
+                "name": "flagConfigLastModified",
+                "value": "",
+                "type": "query",
+                "description": "Optional last-modified metadata provided by an event stream for\nchange-triggered re-fetches (see ADR-0008). Supports Unix timestamp in\nseconds (recommended) or an ISO 8601 date-time string, and is\ntransported as query metadata rather than `If-Modified-Since`. It should\nonly be included when the request is directly triggered by a received\nchange notification event.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Evaluates all feature flags in a single request using a static context. This endpoint is \nused by **client-side providers** for static context evaluation, where all flags are evaluated \nonce and then cached locally for subsequent use.\n\nThe endpoint returns an array of all flag evaluations, where each flag can be either a \nsuccessful evaluation or an evaluation failure. The response includes an ETag header for \ncache validation, allowing clients to use the `If-None-Match` header to avoid unnecess"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
