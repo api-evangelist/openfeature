@@ -20,6 +20,13 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/openfeature.png
 tags:
+- Cloud-Native
+- Feature Flags
+- Feature Management
+- Incubating
+- SDK
+- Specification
+tags_raw:
 - Cloud Native
 - Feature Flags
 - Feature Management
