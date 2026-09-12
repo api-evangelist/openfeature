@@ -63,6 +63,8 @@ apis:
   - type: Documentation
     url: https://openfeature.dev/docs/reference/intro
 common:
+- type: Website
+  url: https://www.openfeature.dev/
 - type: AgenticAccess
   url: agentic-access/openfeature-agentic-access.yml
 - type: DomainSecurity
