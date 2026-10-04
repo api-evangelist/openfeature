@@ -243,10 +243,20 @@ paths:
                 errorDetails: An internal server error occurred while processing the request
 components:
   schemas:
-    flagMetadataDescription:
-      description: 'Arbitrary metadata for the flag, useful for telemetry and documentary purposes.
-
-        '
+    bulkEvaluationFailure:
+      description: "Failure response for bulk evaluation. Returned when the entire bulk evaluation request \nfails (e.g., invalid context, parse errors). Individual flag failures within a successful \nbulk evaluation are represented as evaluationFailure items in the flags array.\n"
+      type: object
+      properties:
+        errorCode:
+          type: string
+          description: "An error code specific to the bulk evaluation error. See \nhttps://openfeature.dev/specification/types#error-code for error code definitions.\n"
+          example: INVALID_CONTEXT
+        errorDetails:
+          type: string
+          description: Optional error details description for logging or debugging purposes
+          example: Context is missing required targetingKey property
+      required:
+      - errorCode
     bulkEvaluationRequest:
       description: "Request body for bulk flag evaluation. Contains a static context that will be used \nto evaluate all flags.\n"
       type: object
@@ -255,98 +265,10 @@ components:
       properties:
         context:
           $ref: '#/components/schemas/context'
-    integerFlag:
-      description: An integer typed flag value.
-      type: object
-      properties:
-        value:
-          type: integer
-      required:
-      - value
-    flagMetadataExamples:
-      description: Example metadata structure for flags
-      example:
-        team: ecommerce
-        businessPurpose: experiment
-        owner: product-team
-    booleanFlag:
-      description: A boolean typed flag value. Used for simple on/off feature flags.
-      type: object
-      properties:
-        value:
-          type: boolean
-      required:
-      - value
-    evaluationFailure:
-      description: "Feature flag evaluation failure response. Returned when a feature flag evaluation fails, such as when \nthe context is invalid, required targeting keys are missing, or parsing errors occur. \n"
-      type: object
-      properties:
-        key:
-          $ref: '#/components/schemas/key'
-        errorCode:
-          type: string
-          description: "OpenFeature compatible error code indicating the type of error. See \nhttps://openfeature.dev/specification/types#error-code for error code definitions.\n"
-          enum:
-          - PARSE_ERROR
-          - TARGETING_KEY_MISSING
-          - INVALID_CONTEXT
-          - GENERAL
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/metadata'
-          - $ref: '#/components/schemas/flagMetadataDescription'
-          - $ref: '#/components/schemas/flagMetadataExamples'
-      required:
-      - key
-      - errorCode
-    metadata:
-      type: object
-      description: "Arbitrary metadata object that can contain any additional information about flags or \nflag sets. This metadata is useful for debugging and telemetry purposes.\n"
-      additionalProperties:
-        oneOf:
-        - type: boolean
-        - type: string
-        - type: number
-    objectFlag:
-      description: An object typed flag value.
-      type: object
-      properties:
-        value:
-          type: object
-          additionalProperties: true
-      required:
-      - value
-    evaluationRequest:
-      description: "Request body for single feature flag evaluation. Contains the evaluation context that will be \nused to evaluate the feature flag.\n"
-      type: object
-      required:
-      - context
-      properties:
-        context:
-          $ref: '#/components/schemas/context'
-    flagNotFound:
-      description: "Feature flag not found response. Returned when a requested feature flag key does not exist in the \nflag management system. This can be an expected response in certain flag management systems. \nThis is distinct from evaluation failures, which occur when a flag exists but cannot be evaluated.\n"
-      type: object
-      properties:
-        key:
-          $ref: '#/components/schemas/key'
-        errorCode:
-          type: string
-          description: Error code indicating the flag was not found
-          enum:
-          - FLAG_NOT_FOUND
-        errorDetails:
-          $ref: '#/components/schemas/errorDetails'
-        metadata:
-          allOf:
-          - $ref: '#/components/schemas/metadata'
-          - $ref: '#/components/schemas/flagMetadataDescription'
-          - $ref: '#/components/schemas/flagMetadataExamples'
-      required:
-      - key
-      - errorCode
+    flagMetadataDescription:
+      description: 'Arbitrary metadata for the flag, useful for telemetry and documentary purposes.
+
+        '
     context:
       type: object
       description: "Evaluation context containing information used to evaluate feature flags. The context \nincludes a `targetingKey` (required) along with additional properties such as \nuser attributes, session data, or request metadata that can be used for targeting rules.\n"
@@ -361,6 +283,58 @@ components:
         email: user@example.com
         plan: premium
         country: CA
+    codeDefaultFlag:
+      description: "A flag evaluation that defers to the code default value. When a flag evaluation returns \nthis type, it indicates that the provider should use the default value specified in the \napplication code rather than a value from the flag management system.\n\n**Note**: This schema has no `value` property. The provider must use the code default \nvalue when processing this response.\n"
+      type: object
+      properties: {}
+    eventStreamEndpoint:
+      type: object
+      required:
+      - requestUri
+      description: 'Structured endpoint components for deployments that need to override
+
+        the origin cleanly while preserving the request target. When present,
+
+        providers construct the connection URL as `origin + requestUri`. If
+
+        `origin` is absent, providers should use their configured OFREP base
+
+        URL origin.
+
+        '
+      properties:
+        origin:
+          type: string
+          format: uri
+          description: 'The scheme + host + optional port portion of the endpoint URL.
+
+            If absent, providers should use their configured OFREP base URL origin.
+
+            '
+          example: https://sse.example.com
+        requestUri:
+          type: string
+          pattern: ^/
+          description: 'The path + query portion of the endpoint URL. Must start with `/`.
+
+            '
+          example: /event-stream?channels=env_abc123_v1
+    stringFlag:
+      description: A string typed flag value.
+      type: object
+      properties:
+        value:
+          type: string
+      required:
+      - value
+    booleanFlag:
+      description: A boolean typed flag value. Used for simple on/off feature flags.
+      type: object
+      properties:
+        value:
+          type: boolean
+      required:
+      - value
     eventStream:
       description: 'A real-time change notification connection endpoint. The `type` field
 
@@ -437,50 +411,66 @@ components:
 
             '
           example: 120
-    floatFlag:
-      description: A float typed flag value.
-      type: object
-      properties:
-        value:
-          type: number
-          format: float
-      required:
-      - value
-    serverEvaluationSuccess:
-      allOf:
-      - $ref: '#/components/schemas/evaluationSuccess'
-    eventStreamEndpoint:
+    bulkEvaluationSuccess:
+      description: "Success response for bulk flag evaluation. Contains an array of flag evaluations, \nwhere each item can be either a successful evaluation or an evaluation failure. \nThis allows partial success scenarios where some flags may fail while others succeed.\n"
       type: object
       required:
-      - requestUri
-      description: 'Structured endpoint components for deployments that need to override
-
-        the origin cleanly while preserving the request target. When present,
-
-        providers construct the connection URL as `origin + requestUri`. If
-
-        `origin` is absent, providers should use their configured OFREP base
-
-        URL origin.
-
-        '
+      - flags
       properties:
-        origin:
-          type: string
-          format: uri
-          description: 'The scheme + host + optional port portion of the endpoint URL.
-
-            If absent, providers should use their configured OFREP base URL origin.
-
-            '
-          example: https://sse.example.com
-        requestUri:
-          type: string
-          pattern: ^/
-          description: 'The path + query portion of the endpoint URL. Must start with `/`.
+        flags:
+          type: array
+          description: Array of flag evaluations. Each evaluation can be a success or failure.
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/evaluationSuccess'
+            - $ref: '#/components/schemas/evaluationFailure'
+        metadata:
+          $ref: '#/components/schemas/metadata'
+          description: 'Arbitrary metadata for the flag set, useful for telemetry and documentary purposes.
 
             '
-          example: /event-stream?channels=env_abc123_v1
+        eventStreams:
+          type: array
+          description: 'Optional array of real-time change notification connections. When present,
+
+            the provider should connect to any entries with a known type and re-fetch
+
+            flag evaluations when notified of changes. If not present, the provider
+
+            should continue using polling for change detection. Entries with unknown
+
+            types must be ignored for forward compatibility.
+
+            '
+          items:
+            $ref: '#/components/schemas/eventStream'
+    flagMetadataExamples:
+      description: Example metadata structure for flags
+      example:
+        team: ecommerce
+        businessPurpose: experiment
+        owner: product-team
+    flagNotFound:
+      description: "Feature flag not found response. Returned when a requested feature flag key does not exist in the \nflag management system. This can be an expected response in certain flag management systems. \nThis is distinct from evaluation failures, which occur when a flag exists but cannot be evaluated.\n"
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/key'
+        errorCode:
+          type: string
+          description: Error code indicating the flag was not found
+          enum:
+          - FLAG_NOT_FOUND
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/metadata'
+          - $ref: '#/components/schemas/flagMetadataDescription'
+          - $ref: '#/components/schemas/flagMetadataExamples'
+      required:
+      - key
+      - errorCode
     evaluationSuccess:
       description: "Successful feature flag evaluation response. The value property is present \nfor all flag types except `codeDefaultFlag`, which indicates the provider should use the \ncode default value.\n"
       type: object
@@ -515,78 +505,88 @@ components:
         - $ref: '#/components/schemas/floatFlag'
         - $ref: '#/components/schemas/objectFlag'
         - $ref: '#/components/schemas/codeDefaultFlag'
-    stringFlag:
-      description: A string typed flag value.
+    key:
+      type: string
+      description: "The unique identifier (key) of the feature flag. This is used to reference a specific \nflag in the flag management system.\n"
+      example: discount-banner
+    objectFlag:
+      description: An object typed flag value.
       type: object
       properties:
         value:
-          type: string
+          type: object
+          additionalProperties: true
       required:
       - value
-    bulkEvaluationSuccess:
-      description: "Success response for bulk flag evaluation. Contains an array of flag evaluations, \nwhere each item can be either a successful evaluation or an evaluation failure. \nThis allows partial success scenarios where some flags may fail while others succeed.\n"
+    integerFlag:
+      description: An integer typed flag value.
+      type: object
+      properties:
+        value:
+          type: integer
+      required:
+      - value
+    floatFlag:
+      description: A float typed flag value.
+      type: object
+      properties:
+        value:
+          type: number
+          format: float
+      required:
+      - value
+    evaluationRequest:
+      description: "Request body for single feature flag evaluation. Contains the evaluation context that will be \nused to evaluate the feature flag.\n"
       type: object
       required:
-      - flags
+      - context
       properties:
-        flags:
-          type: array
-          description: Array of flag evaluations. Each evaluation can be a success or failure.
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/evaluationSuccess'
-            - $ref: '#/components/schemas/evaluationFailure'
-        metadata:
-          $ref: '#/components/schemas/metadata'
-          description: 'Arbitrary metadata for the flag set, useful for telemetry and documentary purposes.
-
-            '
-        eventStreams:
-          type: array
-          description: 'Optional array of real-time change notification connections. When present,
-
-            the provider should connect to any entries with a known type and re-fetch
-
-            flag evaluations when notified of changes. If not present, the provider
-
-            should continue using polling for change detection. Entries with unknown
-
-            types must be ignored for forward compatibility.
-
-            '
-          items:
-            $ref: '#/components/schemas/eventStream'
+        context:
+          $ref: '#/components/schemas/context'
+    metadata:
+      type: object
+      description: "Arbitrary metadata object that can contain any additional information about flags or \nflag sets. This metadata is useful for debugging and telemetry purposes.\n"
+      additionalProperties:
+        oneOf:
+        - type: boolean
+        - type: string
+        - type: number
+    serverEvaluationSuccess:
+      allOf:
+      - $ref: '#/components/schemas/evaluationSuccess'
     errorDetails:
       type: string
       description: "A human-readable error description providing additional context about the evaluation \nfailure. Useful for logging, debugging, and monitoring purposes.\n"
-    bulkEvaluationFailure:
-      description: "Failure response for bulk evaluation. Returned when the entire bulk evaluation request \nfails (e.g., invalid context, parse errors). Individual flag failures within a successful \nbulk evaluation are represented as evaluationFailure items in the flags array.\n"
-      type: object
-      properties:
-        errorCode:
-          type: string
-          description: "An error code specific to the bulk evaluation error. See \nhttps://openfeature.dev/specification/types#error-code for error code definitions.\n"
-          example: INVALID_CONTEXT
-        errorDetails:
-          type: string
-          description: Optional error details description for logging or debugging purposes
-          example: Context is missing required targetingKey property
-      required:
-      - errorCode
     generalErrorResponse:
       description: "General error response for unexpected server errors (500 status). Used when the \nserver encounters an internal error that prevents flag evaluation.\n"
       type: object
       properties:
         errorDetails:
           $ref: '#/components/schemas/errorDetails'
-    codeDefaultFlag:
-      description: "A flag evaluation that defers to the code default value. When a flag evaluation returns \nthis type, it indicates that the provider should use the default value specified in the \napplication code rather than a value from the flag management system.\n\n**Note**: This schema has no `value` property. The provider must use the code default \nvalue when processing this response.\n"
+    evaluationFailure:
+      description: "Feature flag evaluation failure response. Returned when a feature flag evaluation fails, such as when \nthe context is invalid, required targeting keys are missing, or parsing errors occur. \n"
       type: object
-      properties: {}
-    key:
-      type: string
-      description: "The unique identifier (key) of the feature flag. This is used to reference a specific \nflag in the flag management system.\n"
-      example: discount-banner
+      properties:
+        key:
+          $ref: '#/components/schemas/key'
+        errorCode:
+          type: string
+          description: "OpenFeature compatible error code indicating the type of error. See \nhttps://openfeature.dev/specification/types#error-code for error code definitions.\n"
+          enum:
+          - PARSE_ERROR
+          - TARGETING_KEY_MISSING
+          - INVALID_CONTEXT
+          - GENERAL
+        errorDetails:
+          $ref: '#/components/schemas/errorDetails'
+        metadata:
+          allOf:
+          - $ref: '#/components/schemas/metadata'
+          - $ref: '#/components/schemas/flagMetadataDescription'
+          - $ref: '#/components/schemas/flagMetadataExamples'
+      required:
+      - key
+      - errorCode
   parameters:
     flagConfigLastModified:
       in: query
