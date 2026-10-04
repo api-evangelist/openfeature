@@ -63,6 +63,9 @@ apis:
   - type: Documentation
     url: https://openfeature.dev/docs/reference/intro
 common:
+- type: CapabilityMap
+  url: capabilities/openfeature-capability-edges.yml
+  name: OpenFeature Business Capability Map
 - type: Website
   url: https://www.openfeature.dev/
 - type: AgenticAccess
