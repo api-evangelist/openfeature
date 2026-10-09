@@ -94,6 +94,8 @@ common:
   url: https://openfeature.dev/ecosystem/
 - type: Blog
   url: https://openfeature.dev/blog/rss.xml
+- type: SpectralRules
+  url: https://github.com/open-feature/protocol/blob/98c4e0de5583c0d79dd938b82975c80125335e92/.spectral.yaml
 integrations:
 - name: OpenFeature
 - name: Deploys by Netlify
