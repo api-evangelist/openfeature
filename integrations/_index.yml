@@ -82,3 +82,71 @@
     detected: '2026-10-19'
   status: not-a-workflow
   arazzo: null
+- slug: openfeature-openssf-best-practices-badge
+  label: OpenSSF Best Practices Badge
+  partner_name: OpenSSF Best Practices Badge
+  category: OpenSSF Best Practices badge (open-source project security conformance)
+  type: register
+  channel: standard-directory
+  evidence: https://www.bestpractices.dev/en/projects/6240
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: OpenSSF Best Practices badge projects (bestpractices.dev/en/projects.json, paged)
+    standard: OpenSSF Best Practices Badge criteria (formerly CII Best Practices; bestpractices.dev)
+    spec_file: null
+    role: badge-holder
+    registered_name: spec
+    matched_by: domain
+    matched_on: openfeature.dev
+    certified_products:
+    - product: open-source project
+      product_type: open-source project
+      standard: OpenSSF Best Practices Badge criteria (formerly CII Best Practices; bestpractices.dev)
+      lapsed: false
+      partner_tier: passing
+      projects:
+      - name: dotnet-sdk
+        id: 6250
+        url: https://www.bestpractices.dev/en/projects/6250
+        badge_level: passing
+      - name: go-sdk
+        id: 6601
+        url: https://www.bestpractices.dev/en/projects/6601
+        badge_level: passing
+      - name: java-sdk
+        id: 6241
+        url: https://www.bestpractices.dev/en/projects/6241
+        badge_level: passing
+      - name: js-sdk
+        id: 6594
+        url: https://www.bestpractices.dev/en/projects/6594
+        badge_level: passing
+      - name: php-sdk
+        id: 6853
+        url: https://www.bestpractices.dev/en/projects/6853
+        badge_level: passing
+      - name: spec
+        id: 6240
+        url: https://www.bestpractices.dev/en/projects/6240
+        badge_level: passing
+    signal_note: 'certified_products = ONE entry (product type: open-source project) with the highest CURRENT badge
+      level in partner_tier; a provider whose projects only lost the badge is lapsed: true; project names are context,
+      never counted; in_progress entries are not conformance'
+    detected_by: sweep-openssf-best-practices-badges.py
+    detected: '2026-10-22'
+  status: not-a-workflow
+  arazzo: null
+- slug: openfeature-artifact-hub-artifact-hub
+  label: Artifact Hub (artifact-hub)
+  partner: artifact-hub
+  partner_name: Artifact Hub (artifact-hub)
+  category: Artifact Hub listing (Helm chart)
+  type: marketplace
+  marketplace: artifact-hub
+  channel: partner-built
+  evidence: https://artifacthub.io/packages/search?repo=open-feature-operator
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
