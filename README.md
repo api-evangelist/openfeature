@@ -1,4 +1,4 @@
-# OpenFeature (openfeature)
+# OpenFeature
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,40 +64,122 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-OpenFeature is a CNCF incubating open specification for vendor-agnostic feature flag management. It provides a consistent API across multiple languages with a pluggable provider architecture.
+OpenFeature is a CNCF incubating open specification for feature flag management. It provides a vendor-agnostic API for evaluating feature flags, enabling developers to use a consistent interface regardless of the underlying feature flag provider. OpenFeature offers SDKs in multiple languages including Go, Java, JavaScript, Python, PHP, and .NET with a provider-based architecture.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/openfeature/refs/heads/main/apis.yml)
+**Areas:** Cloud-Native · Feature Flags · Feature Management · Incubating · SDK · Specification
 
-## Scope
-- **Type:** Index
-- **Position:** Consumer
-- **Access:** 3rd-Party
+## OpenFeature on APIs.io
 
-## Tags:
- - Feature Flags, Feature Management, SDKs, Specification, Cloud Native, Incubating
+Everything profiled for OpenFeature is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/openfeature/](https://apis.io/providers/openfeature/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
-- **Created:** 2026-03-16
-- **Modified:** 2026-04-28
+### APIs (1)
 
-## APIs
+- [OpenFeature OFREP Core API](https://apis.io/apis/openfeature/openfeature-ofrep-core-api/) — **Required**: Core APIs to implement to support OFREP. *This is the minimum set of APIs required for a flag management system to be OFREP compatible.*
 
-### OpenFeature Evaluation API
-The OpenFeature spec defines APIs for flag evaluation, provider integration, hook lifecycle, and event handling for feature flag management across languages.
+### Published properties
 
-**Human URL:** [https://openfeature.dev/docs/reference/intro](https://openfeature.dev/docs/reference/intro)
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-#### Tags:
- - Feature Flags, Evaluation API, Specification
+#### Agentic access (1)
 
-#### Properties
-- [Documentation](https://openfeature.dev/docs/reference/intro)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/openfeature/refs/heads/main/openapi/openfeature-openapi.yaml)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## Common Properties
+- [Openfeature Agentic Access](https://apis.io/agentic-access/openfeature/openfeature-agentic-access/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [OpenFeature Remote Evaluation Protocol (OFREP) OFREP Core API](https://apis.io/collections/openfeature/open-openfeature-ofrep-core-api/)
+
+#### Governance rules (1)
+
+Spectral rulesets for the provider's contracts.
+
+- [OpenFeature — protocol rules](https://apis.io/rules/openfeature/openfeature-protocol-spectral-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Openfeature Authentication](https://apis.io/security/openfeature/openfeature-authentication/)
+- [Openfeature Domain Security](https://apis.io/security/openfeature/openfeature-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Openfeature Plans Pricing](https://apis.io/plans/openfeature/openfeature-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Openfeature Rate Limits](https://apis.io/rate-limits/openfeature/openfeature-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Openfeature Finops](https://apis.io/finops/openfeature/openfeature-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.openfeature.dev/)
 - [Documentation](https://openfeature.dev/docs/)
-- [GitHub](https://github.com/open-feature)
+- [Blog](https://openfeature.dev/blog/rss.xml)
 
-## Maintainers
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+## API Evangelist rating
+
+**Kin Score 28.3** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 64.3 |
+| Contract quality | 52.7 |
+| Contract governance | 15.2 |
+| Operational transparency | 13.2 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 7.9 |
+
+**Agent readiness 33.1** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | verified |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/openfeature/](https://apis.io/providers/openfeature/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for OpenFeature: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/openfeature/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
